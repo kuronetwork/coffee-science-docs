@@ -35,11 +35,11 @@ SCA Barista 認證分三個等級：Foundation、Intermediate、Professional。
 
 ### Intermediate（中級）
 
-在 Foundation 的基礎上，多了：
+在 Foundation 的基礎上，要考：
 
-- **F1 磨豆機校正**：在 15 分鐘內調整研磨度，把雙份 espresso 萃取時間穩定在 24–30 秒。
-- **F2 飲品製作**：在 8 分鐘內完成指定飲品（雙份 espresso 加一杯雙份卡布奇諾，或依當下考題調整）。
-- **萃取參數標準（雙份）**：粉量 16 g（誤差 ±0.2 g）、液重 40 g（誤差 ±2 g）。
+- **磨豆機校正**：在 15 分鐘內調整研磨度，把雙份 espresso 萃取時間穩定在 24–30 秒。
+- **飲品製作**：在 8 分鐘內完成指定飲品（espresso、卡布奇諾、拿鐵等，或依當下考題調整）。
+- **拉花技術**：愛心與鬱金香。
 - 感官評估：能描述自己煮的 espresso 是平衡、萃取不足或過萃。
 - 飲品一致性：連續出杯不能差太多。
 
@@ -51,7 +51,7 @@ SCA Barista 認證分三個等級：Foundation、Intermediate、Professional。
 
 ## 這個站跟 Barista 認證的關係
 
-我自己上完 Foundation 與 Intermediate，這個站的核心內容（特別是 espresso 章節）就是把上課學到的東西重新整理一次。
+我自己上完 Foundation 與 Intermediate，核心內容（特別是 espresso 章節）就是把上課學到的東西重新整理一次。
 
 ## 咖啡師跟「會煮咖啡的人」差在哪
 
@@ -61,7 +61,7 @@ SCA Barista 認證分三個等級：Foundation、Intermediate、Professional。
 2. **數據**：每次出杯都有量化參數可以記錄與對照。
 3. **複現**：給定一支豆，能在合理時間內找到穩定參數，不是靠手感賭運氣。
 
-這三件事都是可以練的。考證照的價值不在那張紙，而在強迫自己把這三件事建立成肌肉記憶。
+這三件事都是可以練的。考證照的價值不在那張紙，而在強迫自己把這三件事建立成肌肉記憶，了解基礎科學。
 
 :::kuro
 [Kuro 自己填：上完 Barista 中級後，對「咖啡師」這個詞的理解有什麼改變]
