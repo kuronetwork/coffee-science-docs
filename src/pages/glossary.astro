@@ -1,0 +1,79 @@
+---
+/**
+ * 術語表頁。
+ *
+ * 內容來源：reference/01-glossary.md（如果存在的話）。
+ * 還沒寫之前，顯示「整理中」訊息。
+ *
+ * 排版：定義列表 <dl>，不要做成卡片。
+ *
+ * 注意：詳細的術語條目格式之後寫 reference/01-glossary.md 時再用 markdown 表達，
+ * 這個頁面只是 wrapper，用 prose 樣式呈現 markdown 內容。
+ */
+import { getEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import '../styles/typography.css';
+
+const entry = await getEntry('reference', '01-glossary').catch(() => null);
+const Content = entry && !entry.data.draft ? (await entry.render()).Content : null;
+---
+
+<BaseLayout
+  title="術語表"
+  description="咖啡學習筆記中常用術語的中英對照與一句話定義。"
+>
+  <main class="glossary-page">
+    <header class="glossary-header">
+      <h1 class="glossary-title">術語表</h1>
+      <p class="glossary-description">
+        筆記裡常用的中英對照名詞，照注音首字母排，英文照 A–Z。
+      </p>
+    </header>
+
+    {
+      Content ? (
+        <div class="prose">
+          <Content />
+        </div>
+      ) : (
+        <p class="glossary-empty">
+          這份術語表還在整理中。先看看
+          <a href="../getting-started">前言</a>、或回
+          <a href="../">首頁</a>挑一章來讀。
+        </p>
+      )
+    }
+  </main>
+</BaseLayout>
+
+<style>
+  .glossary-page {
+    max-width: var(--content-width);
+    margin: 0 auto;
+    padding: var(--space-12) 0 var(--space-16);
+  }
+
+  .glossary-header {
+    margin-bottom: var(--space-12);
+  }
+
+  .glossary-title {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: var(--font-size-3xl);
+    letter-spacing: -0.005em;
+    margin: 0 0 var(--space-3);
+  }
+
+  .glossary-description {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-lg);
+    line-height: 1.7;
+  }
+
+  .glossary-empty {
+    color: var(--color-text-muted);
+    font-style: italic;
+  }
+</style>

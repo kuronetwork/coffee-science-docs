@@ -1,0 +1,176 @@
+---
+/**
+ * 關於頁。
+ *
+ * 排版：純文字段落，無大頭照、無認證 badge 牆、無 tag chip 列表，認證一律純文字列點。
+ *
+ * 「為什麼有這個站」段落使用 placeholder 機制：
+ *   - whyText 維持 [Kuro 自己填...] 開頭時，整段不渲染
+ *   - 改寫後（不再以 [Kuro 自己填 開頭）自動顯示
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// 直接編輯這段就會上線。維持 [Kuro 自己填...] 開頭表示還沒填，會自動隱藏。
+const whyText = '在咖啡領域，沒看到太多人分享咖啡筆記心得，就自己動手做啦。';
+
+const isPlaceholder = (s: string) => /^\s*\[\s*Kuro\s*自己填/.test(s);
+const showWhy = !isPlaceholder(whyText);
+---
+
+<BaseLayout
+  title="關於 Kuro"
+  description="關於這個咖啡筆記站的作者，與這個站的存在理由。"
+>
+  <main class="about-page">
+    <h1 class="about-title">關於作者 Kuro</h1>
+
+    <section class="about-section">
+      <p>
+        Kuro 是一名 SCA 認證義式咖啡師、PADI 潛水長、資安從業者。
+        深耕資訊安全領域多年，從學生時期熱衷參與資安社群，並經營部落格
+        <a href="https://kuronetwork.me" rel="noopener">Kuro 的資安學習手記</a>，記錄學習與實務經驗。
+        對潛水、戶外活動、咖啡與體驗新事物很有興趣，歡迎揪團出去玩。
+      </p>
+      <p>
+        歡迎參考詳細的
+        <a href="https://kuronetwork.me/about/" rel="noopener">關於我</a>。
+      </p>
+      <p>
+        對潛水有興趣，歡迎參考<a href="https://explorediving.org/" rel="noopener">探索潛水 App 網站</a>。
+      </p>
+    </section>
+
+    {
+      showWhy && (
+        <section class="about-section">
+          <h2>為什麼有這個網站</h2>
+          <p>{whyText}</p>
+        </section>
+      )
+    }
+
+    <section class="about-section about-certs">
+      <h2>持有認證</h2>
+
+      <h3 class="about-cert-group">咖啡</h3>
+      <ul class="about-cert-list">
+        <li>Specialty Coffee Association（SCA）精品咖啡協會 - 義式咖啡師初級與中級認證</li>
+      </ul>
+
+      <h3 class="about-cert-group">健身</h3>
+      <ul class="about-cert-list">
+        <li>中華民國健身運動協會 - 體適能健身 C 級指導員</li>
+      </ul>
+
+      <h3 class="about-cert-group">潛水</h3>
+      <ul class="about-cert-list">
+        <li>PADI - Divemaster 潛水長</li>
+        <li>PADI - Rescue Diver 救援潛水員</li>
+        <li>SSI - React Right Specialty 正確反應員</li>
+        <li>IANTD - Deep Diver 深度潛水員</li>
+        <li>SDI - Advanced Scuba Diver 進階水肺潛水員</li>
+        <li>ADS International - Open Water Diver 開放水域潛水員</li>
+        <li>ADS International - EAN Standard Diver 高氧潛水員</li>
+      </ul>
+    </section>
+
+    <section class="about-section about-section--disclaimer">
+      <h2>關於這個站的內容</h2>
+      <p>
+        這裡的咖啡筆記是個人學習記錄，不是專業教學。歡迎來信指導與分享經驗談。
+      </p>
+    </section>
+
+    <section class="about-section">
+      <h2>聯絡</h2>
+      <p>
+        Email：<a href="mailto:contact@kuronetwork.me">contact@kuronetwork.me</a><br />
+        Twitter / X：<a href="https://twitter.com/catkuroH" rel="noopener">@catkuroH</a>
+      </p>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .about-page {
+    max-width: var(--content-width);
+    margin: 0 auto;
+    padding: var(--space-12) 0 var(--space-16);
+  }
+
+  .about-title {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: var(--font-size-3xl);
+    letter-spacing: -0.005em;
+    margin: 0 0 var(--space-12);
+  }
+
+  .about-section {
+    margin-bottom: var(--space-12);
+  }
+
+  .about-section h2 {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: var(--font-size-xl);
+    margin: 0 0 var(--space-3);
+    color: var(--color-text);
+  }
+
+  .about-section p {
+    margin: 0 0 var(--space-4);
+    line-height: 1.85;
+    color: var(--color-text);
+  }
+
+  .about-section p:last-child {
+    margin-bottom: 0;
+  }
+
+  .about-certs {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+
+  .about-cert-group {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: var(--font-size-base);
+    color: var(--color-text);
+    margin: var(--space-6) 0 var(--space-2);
+  }
+
+  .about-cert-group:first-of-type {
+    margin-top: var(--space-3);
+  }
+
+  .about-cert-list {
+    margin: 0 0 var(--space-2);
+    padding-left: 1.4em;
+    font-size: var(--font-size-sm);
+    color: var(--color-text);
+    line-height: 1.85;
+  }
+
+  .about-cert-list li {
+    margin-bottom: var(--space-1);
+  }
+
+  .about-cert-note {
+    margin-top: var(--space-4) !important;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+
+  .about-section--disclaimer {
+    padding: var(--space-4) var(--space-6);
+    background: var(--color-bg-subtle);
+    border-left: 2px solid var(--color-border-strong);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  }
+
+  .about-section--disclaimer h2 {
+    margin-top: 0;
+  }
+</style>

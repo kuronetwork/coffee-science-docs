@@ -1,0 +1,121 @@
+/*
+ * Design tokens for Kuro Coffee Science Notes.
+ *
+ * 規則摘要：
+ *   - 95% 的視覺只用 bg / text / text-muted 三色
+ *   - 強調色（accent）只用於連結、章節編號 hover、當前選中導覽項目、callout bar
+ *   - 圓角最大 8px，按鈕/輸入框 6px
+ *   - 整站幾乎不用陰影，只在下拉選單/modal 用極淺陰影
+ */
+
+:root {
+  /* === 顏色：淺色模式 === */
+  --color-bg: #FAF7F0;
+  --color-bg-elevated: #FFFFFF;
+  --color-bg-subtle: #ECE7DA;
+
+  --color-text: #1A1612;
+  --color-text-muted: #5C5246;
+  --color-text-subtle: #8A7F6E;
+
+  --color-accent: #7A3E1D;
+  --color-accent-hover: #9C4F25;
+  --color-accent-soft: #C9A88C;
+
+  --color-link: var(--color-accent);
+  --color-link-hover: var(--color-accent-hover);
+
+  --color-border: #DDD6C5;
+  --color-border-strong: #B8AC95;
+
+  --color-callout-note-bg: #F2EBD7;
+  --color-callout-note-bar: #6B5C42;
+
+  --color-callout-warning-bg: #F5DDB8;
+  --color-callout-warning-bar: #8C5A1C;
+
+  --color-callout-tip-bg: #DCE6D2;
+  --color-callout-tip-bar: #4D6B3A;
+
+  --color-callout-kuro-bg: #E5D5B8;
+  --color-callout-kuro-bar: var(--color-accent);
+
+  /* === 字體 === */
+  --font-serif: 'Noto Serif TC', Georgia, 'Times New Roman', serif;
+  --font-sans:  'Noto Sans TC', -apple-system, BlinkMacSystemFont, 'PingFang TC', 'Helvetica Neue', sans-serif;
+  --font-mono:  'IBM Plex Mono', Menlo, Consolas, monospace;
+
+  /* === 字級 === */
+  --font-size-xs:   0.75rem;
+  --font-size-sm:   0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg:   1.125rem;
+  --font-size-xl:   1.375rem;
+  --font-size-2xl:  1.75rem;
+  --font-size-3xl:  2.25rem;
+  --font-size-4xl:  2.875rem;
+
+  /* === 間距：4px 基準 === */
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-6:  1.5rem;
+  --space-8:  2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+
+  /* === 圓角與邊框 === */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+
+  --border-thin:   1px solid var(--color-border);
+  --border-strong: 1px solid var(--color-border-strong);
+
+  /* === 陰影：僅限 modal / 下拉選單 === */
+  --shadow-overlay: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+  /* === 過渡 === */
+  --transition-fast: 120ms ease;
+  --transition-base: 180ms ease;
+
+  /* === 內容寬度 === */
+  --content-width: 720px;
+  --layout-max-width: 1280px;
+}
+
+[data-theme='dark'] {
+  --color-bg: #14110D;
+  --color-bg-elevated: #1E1A14;
+  --color-bg-subtle: #28221A;
+
+  --color-text: #EDE5D2;
+  --color-text-muted: #B5A88E;
+  --color-text-subtle: #847A66;
+
+  --color-accent: #D9A876;
+  --color-accent-hover: #E8BC8E;
+  --color-accent-soft: #6B4A2E;
+
+  --color-link: var(--color-accent);
+  --color-link-hover: var(--color-accent-hover);
+
+  --color-border: #2E2820;
+  --color-border-strong: #4D4538;
+
+  --color-callout-note-bg: #2C2620;
+  --color-callout-note-bar: #A89A7E;
+
+  --color-callout-warning-bg: #382818;
+  --color-callout-warning-bar: #D69954;
+
+  --color-callout-tip-bg: #1E2A1F;
+  --color-callout-tip-bar: #8AA376;
+
+  --color-callout-kuro-bg: #3A2C1C;
+  --color-callout-kuro-bar: var(--color-accent);
+
+  --shadow-overlay: 0 4px 12px rgba(0, 0, 0, 0.4);
+}

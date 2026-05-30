@@ -1,0 +1,220 @@
+/*
+ * Markdown 渲染樣式。
+ * 套在 .prose 容器內，避免影響站內其他文字。
+ *
+ * 規則摘要：
+ *   - 中文 line-height 1.85、英文 line-height 1.7
+ *   - 段落間距大於行距
+ *   - 連結預設文字色，靠底線辨識
+ *   - 表格邊框極淺、無交替底色
+ */
+
+.prose {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-base);
+  line-height: 1.85;
+  color: var(--color-text);
+}
+
+.prose > * + * {
+  margin-top: var(--space-6);
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  line-height: 1.35;
+  color: var(--color-text);
+}
+
+.prose h2 {
+  font-size: var(--font-size-2xl);
+  margin-top: var(--space-16);
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-2);
+  border-bottom: var(--border-thin);
+}
+
+.prose h3 {
+  font-size: var(--font-size-xl);
+  margin-top: var(--space-12);
+  margin-bottom: var(--space-3);
+}
+
+.prose h4 {
+  font-size: var(--font-size-lg);
+  margin-top: var(--space-8);
+  margin-bottom: var(--space-2);
+}
+
+.prose p {
+  margin: 0 0 var(--space-6);
+}
+
+.prose a {
+  color: var(--color-text);
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent);
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+}
+
+.prose a:hover {
+  color: var(--color-accent);
+  text-decoration-color: var(--color-accent-hover);
+  text-decoration-thickness: 2px;
+}
+
+.prose strong {
+  font-weight: 500;
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.5em;
+  margin: 0 0 var(--space-6);
+}
+
+.prose li {
+  margin-bottom: var(--space-2);
+}
+
+.prose li > p {
+  margin-bottom: var(--space-2);
+}
+
+.prose blockquote {
+  font-family: var(--font-serif);
+  font-size: var(--font-size-lg);
+  font-style: italic;
+  color: var(--color-text);
+  border-left: 2px solid var(--color-border-strong);
+  padding: var(--space-2) var(--space-6);
+  margin: var(--space-8) 0;
+}
+
+.prose blockquote p {
+  margin-bottom: var(--space-2);
+}
+
+.prose blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+/* === inline code 與 block code === */
+.prose code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--color-bg-subtle);
+  padding: 0 0.3em;
+  border-radius: var(--radius-sm);
+}
+
+.prose pre {
+  font-family: var(--font-mono);
+  background: var(--color-bg-subtle);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+  line-height: 1.6;
+  margin: var(--space-6) 0;
+}
+
+.prose pre code {
+  background: none;
+  padding: 0;
+  font-size: var(--font-size-sm);
+}
+
+/* === 表格：邊框極淺、無交替底色、標題列加粗 === */
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: var(--space-6) 0;
+  font-size: var(--font-size-sm);
+}
+
+.prose th,
+.prose td {
+  border: var(--border-thin);
+  padding: var(--space-2) var(--space-3);
+  text-align: left;
+  vertical-align: top;
+}
+
+.prose thead th {
+  font-weight: 500;
+  background: var(--color-bg-subtle);
+}
+
+/* === 圖片 === */
+.prose img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+}
+
+.prose figure {
+  margin: var(--space-8) 0;
+}
+
+.prose figcaption {
+  margin-top: var(--space-2);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+/* === 分隔線 === */
+.prose hr {
+  border: 0;
+  border-top: var(--border-thin);
+  margin: var(--space-12) 0;
+}
+
+/* === 文章首段不要有上邊距，貼緊標題下方 metadata === */
+.prose > :first-child {
+  margin-top: 0;
+}
+
+/* === Callout === */
+.prose .callout {
+  position: relative;
+  margin: var(--space-6) 0;
+  padding: var(--space-4) var(--space-6);
+  border-left: 3px solid var(--color-callout-note-bar);
+  background: var(--color-callout-note-bg);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+}
+
+.prose .callout > .callout__title {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+}
+
+.prose .callout > p:last-child {
+  margin-bottom: 0;
+}
+
+.prose .callout[data-callout='warning'] {
+  border-left-color: var(--color-callout-warning-bar);
+  background: var(--color-callout-warning-bg);
+}
+
+.prose .callout[data-callout='tip'] {
+  border-left-color: var(--color-callout-tip-bar);
+  background: var(--color-callout-tip-bg);
+}
+
+.prose .callout[data-callout='kuro'] {
+  border-left-color: var(--color-callout-kuro-bar);
+  background: var(--color-callout-kuro-bg);
+}

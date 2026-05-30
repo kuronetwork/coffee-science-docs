@@ -1,0 +1,278 @@
+---
+/**
+ * 文章頁左側 Sidebar。
+ *   - 顯示完整 10 個章節
+ *   - 當前章節展開，顯示該章節下所有文章
+ *   - 其他章節摺疊
+ *   - 章節名點擊會跳到章節索引頁；旁邊的箭頭只控制展開
+ *   - 當前文章用強調色高亮 + 左側 2px 直線
+ *   - 桌面 sticky 獨立 scroll；手機在 DocLayout 變成 drawer
+ */
+import { sections } from '../content/sections';
+import { getDocsBySection } from '../utils/content';
+import { url } from '../utils/url';
+import ProgressTag from './ProgressTag.astro';
+
+interface Props {
+  currentCollection: string;
+  currentSlug?: string;
+}
+
+const { currentCollection, currentSlug } = Astro.props;
+
+// 預先抓所有章節文章，sidebar 無論在哪一頁都顯示完整目錄
+const sectionEntries = await Promise.all(
+  sections.map(async (section) => ({
+    section,
+    docs: await getDocsBySection(section.slug),
+  })),
+);
+---
+
+<nav class="sidebar" aria-label="章節導覽">
+  <ol class="sidebar__sections">
+    {
+      sectionEntries.map(({ section, docs }) => {
+        const isActive = section.slug === currentCollection;
+        return (
+          <li class="sidebar__section" data-active={isActive ? 'true' : 'false'}>
+            <div class="sidebar__row">
+              <a class="sidebar__link" href={url(`/${section.slug}`)}>
+                <span class="sidebar__numeral">{section.numeral ?? '·'}</span>
+                <span class="sidebar__section-title">{section.title}</span>
+              </a>
+              {docs.length > 0 && (
+                <button
+                  type="button"
+                  class="sidebar__toggle"
+                  data-sidebar-toggle
+                  aria-expanded={isActive ? 'true' : 'false'}
+                  aria-label={`展開 ${section.title} 章節文章`}
+                >
+                  <svg
+                    class="sidebar__toggle-icon"
+                    viewBox="0 0 12 12"
+                    width="10"
+                    height="10"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M3 4.5 L6 7.5 L9 4.5"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      fill="none"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </button>
+              )}
+            </div>
+
+            {docs.length > 0 && (
+              <ul
+                class="sidebar__docs"
+                data-sidebar-docs
+                hidden={!isActive}
+              >
+                {docs.map((doc) => {
+                  const isCurrent = isActive && doc.slug === currentSlug;
+                  return (
+                    <li
+                      class="sidebar__doc"
+                      data-current={isCurrent ? 'true' : 'false'}
+                    >
+                      <a
+                        href={url(`/${section.slug}/${doc.slug}`)}
+                        class="sidebar__doc-link"
+                        aria-current={isCurrent ? 'page' : undefined}
+                      >
+                        <span class="sidebar__doc-title">{doc.data.title}</span>
+                        <ProgressTag progress={doc.data.progress} />
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </li>
+        );
+      })
+    }
+  </ol>
+</nav>
+
+<style>
+  .sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    font-size: var(--font-size-sm);
+  }
+
+  .sidebar__sections {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .sidebar__section {
+    border-top: var(--border-thin);
+  }
+
+  .sidebar__section:first-child {
+    border-top: 0;
+  }
+
+  .sidebar__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-3) 0;
+    gap: var(--space-2);
+  }
+
+  .sidebar__link {
+    flex: 1;
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .sidebar__link:hover {
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .sidebar__section[data-active='true'] .sidebar__link {
+    color: var(--color-text);
+  }
+
+  .sidebar__numeral {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    color: var(--color-text-subtle);
+    min-width: 1.4em;
+  }
+
+  .sidebar__section[data-active='true'] .sidebar__numeral {
+    color: var(--color-accent);
+  }
+
+  .sidebar__section-title {
+    font-weight: 500;
+  }
+
+  .sidebar__toggle {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    color: var(--color-text-subtle);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    transition: color var(--transition-fast),
+                background var(--transition-fast);
+  }
+
+  .sidebar__toggle:hover {
+    color: var(--color-text);
+    background: var(--color-bg-subtle);
+  }
+
+  .sidebar__toggle-icon {
+    transition: transform var(--transition-fast);
+  }
+
+  .sidebar__toggle[aria-expanded='true'] .sidebar__toggle-icon {
+    transform: rotate(180deg);
+  }
+
+  .sidebar__docs {
+    list-style: none;
+    margin: 0 0 var(--space-3);
+    padding: 0 0 0 var(--space-6);
+    border-left: 1px solid var(--color-border);
+  }
+
+  .sidebar__doc {
+    margin-left: -1px;
+    padding-left: var(--space-3);
+    border-left: 2px solid transparent;
+    transition: border-color var(--transition-fast);
+  }
+
+  .sidebar__doc + .sidebar__doc {
+    margin-top: var(--space-2);
+  }
+
+  .sidebar__doc[data-current='true'] {
+    border-left-color: var(--color-accent);
+  }
+
+  .sidebar__doc-link {
+    display: block;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    line-height: 1.55;
+    padding: var(--space-1) 0;
+    transition: color var(--transition-fast);
+  }
+
+  .sidebar__doc-link:hover {
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .sidebar__doc[data-current='true'] .sidebar__doc-link {
+    color: var(--color-accent);
+  }
+
+  .sidebar__doc-title {
+    display: inline;
+  }
+</style>
+
+<script>
+  /**
+   * Sidebar 章節展開／收合：點擊箭頭按鈕切換對應 ul 的 hidden 屬性。
+   */
+  function initSidebarToggles() {
+    document.querySelectorAll<HTMLButtonElement>('[data-sidebar-toggle]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const section = btn.closest('.sidebar__section');
+        if (!section) return;
+        const docs = section.querySelector<HTMLUListElement>('[data-sidebar-docs]');
+        if (!docs) return;
+        const expanded = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+        if (expanded) {
+          docs.setAttribute('hidden', '');
+        } else {
+          docs.removeAttribute('hidden');
+        }
+      });
+    });
+
+    // 把當前文章捲到 sidebar 視野中央
+    const current = document.querySelector('.sidebar__doc[data-current="true"]');
+    if (current && 'scrollIntoView' in current) {
+      requestAnimationFrame(() => {
+        current.scrollIntoView({ block: 'center', behavior: 'instant' as ScrollBehavior });
+      });
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSidebarToggles, { once: true });
+  } else {
+    initSidebarToggles();
+  }
+</script>

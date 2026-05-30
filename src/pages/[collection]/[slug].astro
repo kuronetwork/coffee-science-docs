@@ -1,0 +1,45 @@
+---
+/**
+ * 單篇文章動態路由。
+ *
+ * 從 Astro Content Collections 抓所有 collection 與 slug，
+ * 組合成靜態路由。draft: true 的會被 getDocsBySection 過濾掉。
+ */
+import { sections } from '../../content/sections';
+import { getDocsBySection } from '../../utils/content';
+import { readingTime } from '../../utils/reading-time';
+import DocLayout from '../../layouts/DocLayout.astro';
+
+export async function getStaticPaths() {
+  const paths = [];
+  for (const section of sections) {
+    const docs = await getDocsBySection(section.slug);
+    for (const doc of docs) {
+      paths.push({
+        params: { collection: section.slug, slug: doc.slug },
+        props: { doc },
+      });
+    }
+  }
+  return paths;
+}
+
+const { doc } = Astro.props;
+const { Content, headings } = await doc.render();
+
+const minutes = readingTime(doc.body);
+---
+
+<DocLayout
+  title={doc.data.title}
+  description={doc.data.description}
+  collection={doc.collection}
+  slug={doc.slug}
+  updated={doc.data.updated}
+  progress={doc.data.progress}
+  readingTimeMinutes={minutes}
+  sca={doc.data.sca ?? null}
+  headings={headings}
+>
+  <Content />
+</DocLayout>

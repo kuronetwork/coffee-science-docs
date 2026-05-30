@@ -1,0 +1,143 @@
+---
+/**
+ * 全站 Header。
+ *
+ * 設計重點：
+ *   - 站名「Kuro Coffee Science Notes」+ 副標「咖啡科學學習筆記」
+ *   - 站名後面有副標時，桌面顯示，手機只顯示主名
+ *   - 右側依序：關於、搜尋觸發器、ThemeToggle
+ *   - 元件之間用 --space-4，不要置中分隔點
+ */
+import { url } from '../utils/url';
+import ThemeToggle from './ThemeToggle.astro';
+---
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="site-header__brand" href={url('/')}>
+      <span class="site-header__name">Kuro Coffee Science Notes</span>
+      <span class="site-header__sub">｜咖啡科學學習筆記</span>
+    </a>
+
+    <nav class="site-header__actions" aria-label="站內動作">
+      <a class="header-action" href={url('/about')}>關於</a>
+
+      <button
+        type="button"
+        class="header-action"
+        data-search-trigger
+        aria-label="開啟搜尋"
+        disabled
+      >
+        <span>搜尋咖啡知識</span>
+        <kbd class="header-action__kbd">⌘K</kbd>
+      </button>
+
+      <ThemeToggle />
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    border-bottom: var(--border-thin);
+    background: var(--color-bg);
+  }
+
+  .site-header__inner {
+    max-width: var(--layout-max-width);
+    margin: 0 auto;
+    padding: var(--space-4) var(--space-8);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-8);
+  }
+
+  .site-header__brand {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--space-1);
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 17px;
+    letter-spacing: -0.01em;
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .site-header__brand:hover {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  .site-header__sub {
+    font-weight: 400;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+  }
+
+  .site-header__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .header-action {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-1) var(--space-2);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    transition: color var(--transition-fast),
+                border-color var(--transition-fast);
+  }
+
+  .header-action:hover:not(:disabled) {
+    color: var(--color-accent);
+    text-decoration: none;
+    border-color: var(--color-border);
+  }
+
+  .header-action:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  .header-action__kbd {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-subtle);
+    border: var(--border-thin);
+    border-radius: var(--radius-sm);
+    padding: 0 0.35em;
+    line-height: 1.4;
+  }
+
+  @media (max-width: 768px) {
+    .site-header__sub {
+      display: none;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .site-header__inner {
+      padding: var(--space-3) var(--space-4);
+      gap: var(--space-3);
+    }
+
+    .header-action__kbd {
+      display: none;
+    }
+
+    .header-action span:not(.site-header__sub) {
+      /* 手機版搜尋按鈕簡化文字 */
+    }
+  }
+</style>

@@ -1,0 +1,121 @@
+/* 基礎排版：套用 tokens、設定全站文字節奏 */
+
+html {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.85;
+}
+
+body {
+  font-size: var(--font-size-base);
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  line-height: 1.35;
+  margin: 0 0 var(--space-4);
+  color: var(--color-text);
+}
+
+p {
+  margin: 0 0 var(--space-6);
+}
+
+a {
+  color: var(--color-text);
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent);
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+  transition: text-decoration-color var(--transition-fast),
+              text-decoration-thickness var(--transition-fast),
+              color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-accent);
+  text-decoration-color: var(--color-accent-hover);
+  text-decoration-thickness: 2px;
+}
+
+strong, b {
+  font-weight: 500;
+}
+
+code, kbd, samp, pre {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+
+code {
+  background: var(--color-bg-subtle);
+  padding: 0 0.3em;
+  border-radius: var(--radius-sm);
+}
+
+pre {
+  background: var(--color-bg-subtle);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+  line-height: 1.6;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+}
+
+hr {
+  border: 0;
+  border-top: var(--border-thin);
+  margin: var(--space-12) 0;
+}
+
+blockquote {
+  font-family: var(--font-serif);
+  font-size: var(--font-size-lg);
+  color: var(--color-text);
+  border-left: 2px solid var(--color-border-strong);
+  padding: var(--space-2) var(--space-6);
+  margin: var(--space-8) 0;
+  font-style: italic;
+}
+
+/* Skip-to-content：預設視覺隱藏，focus 時出現 */
+.skip-to-content {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-bg-elevated);
+  border: var(--border-strong);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  transform: translateY(-200%);
+  transition: transform var(--transition-base);
+  z-index: 100;
+}
+
+.skip-to-content:focus {
+  transform: translateY(0);
+}
+
+/* 螢幕閱讀器專用：視覺隱藏但保留語意 */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

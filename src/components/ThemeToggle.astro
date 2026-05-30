@@ -1,0 +1,235 @@
+---
+/**
+ * ThemeToggle。
+ *
+ * 三段切換：light / dark / system。預設 system（跟隨 prefers-color-scheme）。
+ *   - 桌面：segmented control，三個選項並排
+ *   - 手機：cycle button，按一次切下一個
+ *
+ * 與 BaseLayout 的初始化 script 共用 localStorage key：'theme'
+ *   - 'light' / 'dark'：使用者明確選擇
+ *   - 沒有值（或 'system'）：跟隨系統色彩
+ */
+---
+
+<div class="theme-toggle" data-theme-toggle>
+  <fieldset class="theme-toggle__group" aria-label="主題">
+    <legend class="sr-only">切換顯示主題</legend>
+
+    <label class="theme-toggle__option">
+      <input type="radio" name="theme" value="light" />
+      <span>淺色</span>
+    </label>
+
+    <label class="theme-toggle__option">
+      <input type="radio" name="theme" value="dark" />
+      <span>深色</span>
+    </label>
+
+    <label class="theme-toggle__option">
+      <input type="radio" name="theme" value="system" />
+      <span>系統</span>
+    </label>
+  </fieldset>
+
+  <button
+    type="button"
+    class="theme-toggle__cycle"
+    data-theme-cycle
+    aria-label="切換主題"
+  >
+    <span data-theme-cycle-label>系統</span>
+  </button>
+</div>
+
+<style>
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* === 桌面 segmented control === */
+  .theme-toggle__group {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    background: var(--color-bg-elevated);
+    border-radius: var(--radius-md);
+    border: var(--border-thin);
+    overflow: hidden;
+  }
+
+  .theme-toggle__option {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 var(--space-3);
+    height: 28px;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: color var(--transition-fast),
+                background var(--transition-fast);
+  }
+
+  .theme-toggle__option input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .theme-toggle__option:hover {
+    color: var(--color-text);
+  }
+
+  .theme-toggle__option:has(input:checked) {
+    color: var(--color-text);
+    background: var(--color-bg-subtle);
+  }
+
+  .theme-toggle__option:has(input:focus-visible) {
+    outline: 2px solid var(--color-accent);
+    outline-offset: -2px;
+  }
+
+  /* 中間選項加分隔線 */
+  .theme-toggle__option + .theme-toggle__option {
+    border-left: var(--border-thin);
+  }
+
+  /* === 手機 cycle button === */
+  .theme-toggle__cycle {
+    display: none;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-1) var(--space-3);
+    height: 28px;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    background: var(--color-bg-elevated);
+    border: var(--border-thin);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+  }
+
+  .theme-toggle__cycle:hover {
+    color: var(--color-text);
+  }
+
+  @media (max-width: 640px) {
+    .theme-toggle__group {
+      display: none;
+    }
+
+    .theme-toggle__cycle {
+      display: inline-flex;
+    }
+  }
+</style>
+
+<script>
+  type ThemeChoice = 'light' | 'dark' | 'system';
+
+  const STORAGE_KEY = 'theme';
+  const cycleOrder: ThemeChoice[] = ['system', 'light', 'dark'];
+  const labelMap: Record<ThemeChoice, string> = {
+    light: '淺色',
+    dark: '深色',
+    system: '系統',
+  };
+
+  function readChoice(): ThemeChoice {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored === 'light' || stored === 'dark') return stored;
+    } catch (_err) {
+      /* localStorage 不可用 */
+    }
+    return 'system';
+  }
+
+  function applyChoice(choice: ThemeChoice) {
+    let resolved: 'light' | 'dark' = 'light';
+    if (choice === 'dark') {
+      resolved = 'dark';
+    } else if (choice === 'light') {
+      resolved = 'light';
+    } else if (
+      window.matchMedia &&
+      window.matchMedia('(prefers-color-scheme: dark)').matches
+    ) {
+      resolved = 'dark';
+    }
+    document.documentElement.dataset.theme = resolved;
+
+    try {
+      if (choice === 'system') {
+        localStorage.removeItem(STORAGE_KEY);
+      } else {
+        localStorage.setItem(STORAGE_KEY, choice);
+      }
+    } catch (_err) {
+      /* 寫入失敗就放著，下次重新算 */
+    }
+  }
+
+  function syncSegmentedControl(root: HTMLElement, choice: ThemeChoice) {
+    root.querySelectorAll<HTMLInputElement>('input[name="theme"]').forEach((input) => {
+      input.checked = input.value === choice;
+    });
+  }
+
+  function syncCycleLabel(root: HTMLElement, choice: ThemeChoice) {
+    const label = root.querySelector<HTMLElement>('[data-theme-cycle-label]');
+    if (label) label.textContent = labelMap[choice];
+  }
+
+  function init() {
+    const root = document.querySelector<HTMLElement>('[data-theme-toggle]');
+    if (!root) return;
+
+    let choice = readChoice();
+    applyChoice(choice);
+    syncSegmentedControl(root, choice);
+    syncCycleLabel(root, choice);
+
+    // 桌面 segmented control
+    root.querySelectorAll<HTMLInputElement>('input[name="theme"]').forEach((input) => {
+      input.addEventListener('change', () => {
+        if (!input.checked) return;
+        choice = input.value as ThemeChoice;
+        applyChoice(choice);
+        syncCycleLabel(root, choice);
+      });
+    });
+
+    // 手機 cycle button
+    const cycle = root.querySelector<HTMLButtonElement>('[data-theme-cycle]');
+    cycle?.addEventListener('click', () => {
+      const idx = cycleOrder.indexOf(choice);
+      choice = cycleOrder[(idx + 1) % cycleOrder.length];
+      applyChoice(choice);
+      syncSegmentedControl(root, choice);
+      syncCycleLabel(root, choice);
+    });
+
+    // 在 'system' 模式下，跟隨 OS 切換時即時更新
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    mq.addEventListener('change', () => {
+      if (choice === 'system') applyChoice('system');
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init, { once: true });
+  } else {
+    init();
+  }
+</script>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://kurohuang.github.io/coffee-science-docs/sitemap-index.xml

@@ -1,0 +1,227 @@
+---
+/**
+ * 首頁章節導覽。
+ *
+ * 不要做卡片牆，不要 icon grid。
+ * 用書本目錄樣式：每行一個章節。
+ *   - 左側：漢字編號（前言/附錄顯示「前言」/「附錄」）
+ *   - 中間：章節名 + 一句話描述
+ *   - 右側：進度（done / total，與「在寫」tag）
+ *
+ * 三組：前言 → 主章節（一～八）→ 附錄。
+ * 三組之間用 --space-12 大留白區隔。
+ */
+import { sections } from '../content/sections';
+import { getSectionProgress } from '../utils/content';
+import { url } from '../utils/url';
+
+// 預先抓所有章節進度
+const items = await Promise.all(
+  sections.map(async (section) => ({
+    section,
+    progress: await getSectionProgress(section.slug),
+  })),
+);
+
+const meta = items.filter((i) => i.section.numeral === null);
+const main = items.filter((i) => i.section.numeral !== null);
+
+const preface = meta.filter((i) => i.section.order === 0);
+const appendix = meta.filter((i) => i.section.order > 8);
+
+function progressLabel(done: number, total: number) {
+  if (total === 0) return '尚未開始';
+  if (done === 0) return `${total} 篇`;
+  if (done === total) return `${total} 篇　已完成`;
+  return `${total} 篇　完成 ${done}`;
+}
+---
+
+<section class="home-toc" aria-labelledby="home-toc-heading">
+  <h2 id="home-toc-heading" class="home-toc__heading">目錄</h2>
+
+  {
+    preface.length > 0 && (
+      <ol class="home-toc__list home-toc__list--meta">
+        {preface.map(({ section, progress }) => (
+          <li class="home-toc__item">
+            <a class="home-toc__link" href={url(`/${section.slug}`)}>
+              <span class="home-toc__numeral home-toc__numeral--meta">前言</span>
+              <span class="home-toc__content">
+                <span class="home-toc__title">{section.title === '前言' ? section.description : section.title}</span>
+              </span>
+              <span class="home-toc__progress">
+                {progressLabel(progress.done, progress.total)}
+              </span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    )
+  }
+
+  <ol class="home-toc__list">
+    {main.map(({ section, progress }) => (
+      <li class="home-toc__item">
+        <a class="home-toc__link" href={url(`/${section.slug}`)}>
+          <span class="home-toc__numeral">{section.numeral}</span>
+          <span class="home-toc__content">
+            <span class="home-toc__title">{section.title}</span>
+            <span class="home-toc__description">{section.description}</span>
+          </span>
+          <span class="home-toc__progress">
+            {progressLabel(progress.done, progress.total)}
+          </span>
+        </a>
+      </li>
+    ))}
+  </ol>
+
+  {
+    appendix.length > 0 && (
+      <ol class="home-toc__list home-toc__list--meta">
+        {appendix.map(({ section, progress }) => (
+          <li class="home-toc__item">
+            <a class="home-toc__link" href={url(`/${section.slug}`)}>
+              <span class="home-toc__numeral home-toc__numeral--meta">附錄</span>
+              <span class="home-toc__content">
+                <span class="home-toc__title">{section.description}</span>
+              </span>
+              <span class="home-toc__progress">
+                {progressLabel(progress.done, progress.total)}
+              </span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    )
+  }
+</section>
+
+<style>
+  .home-toc {
+    margin: var(--space-16) 0;
+  }
+
+  .home-toc__heading {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    font-weight: 400;
+    color: var(--color-text-subtle);
+    text-transform: lowercase;
+    letter-spacing: 0.04em;
+    margin: 0 0 var(--space-4);
+  }
+
+  .home-toc__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .home-toc__list--meta {
+    margin-top: var(--space-12);
+    margin-bottom: var(--space-12);
+  }
+
+  .home-toc__item {
+    border-top: var(--border-thin);
+  }
+
+  .home-toc__list .home-toc__item:last-child {
+    border-bottom: var(--border-thin);
+  }
+
+  .home-toc__link {
+    display: grid;
+    grid-template-columns: 64px minmax(0, 1fr) auto;
+    align-items: baseline;
+    gap: var(--space-4);
+    padding: var(--space-4) 0;
+    color: var(--color-text);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .home-toc__link:hover {
+    text-decoration: none;
+  }
+
+  .home-toc__numeral {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 28px;
+    color: var(--color-text-muted);
+    text-align: right;
+    line-height: 1;
+    letter-spacing: 0.02em;
+    transition: color var(--transition-fast);
+  }
+
+  .home-toc__numeral--meta {
+    font-size: var(--font-size-base);
+    font-weight: 400;
+    color: var(--color-text-subtle);
+    letter-spacing: 0.06em;
+  }
+
+  .home-toc__link:hover .home-toc__numeral {
+    color: var(--color-accent);
+  }
+
+  .home-toc__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    min-width: 0;
+  }
+
+  .home-toc__title {
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--color-text);
+  }
+
+  .home-toc__link:hover .home-toc__title {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+  }
+
+  .home-toc__description {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+
+  .home-toc__progress {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-subtle);
+    white-space: nowrap;
+  }
+
+  @media (max-width: 640px) {
+    .home-toc__link {
+      grid-template-columns: 40px minmax(0, 1fr);
+      grid-template-areas:
+        'numeral content'
+        '. progress';
+      gap: var(--space-3);
+    }
+
+    .home-toc__numeral {
+      grid-area: numeral;
+      font-size: 22px;
+    }
+
+    .home-toc__content {
+      grid-area: content;
+    }
+
+    .home-toc__progress {
+      grid-area: progress;
+      margin-top: var(--space-1);
+    }
+  }
+</style>

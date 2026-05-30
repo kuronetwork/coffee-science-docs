@@ -1,0 +1,39 @@
+---
+/**
+ * 全站 Footer。
+ * 設計極簡：只有版權與年份。
+ */
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <p class="site-footer__meta">© {year} Kuro · MIT License</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: var(--space-24);
+    border-top: var(--border-thin);
+  }
+
+  .site-footer__inner {
+    max-width: var(--layout-max-width);
+    margin: 0 auto;
+    padding: var(--space-6) var(--space-8) var(--space-12);
+  }
+
+  .site-footer__meta {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+  }
+
+  @media (max-width: 640px) {
+    .site-footer__inner {
+      padding: var(--space-4) var(--space-4) var(--space-8);
+    }
+  }
+</style>

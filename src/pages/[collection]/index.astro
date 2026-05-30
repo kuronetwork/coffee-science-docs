@@ -1,0 +1,210 @@
+---
+/**
+ * 章節索引頁。
+ *
+ * 列出該章節下所有文章（已過濾 draft），用書本目錄樣式呈現。
+ * 桌面兩欄（左 sidebar + 右內容），手機單欄。
+ */
+import { sections, type CollectionSlug } from '../../content/sections';
+import { getDocsBySection } from '../../utils/content';
+import { url } from '../../utils/url';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Sidebar from '../../components/Sidebar.astro';
+import ProgressTag from '../../components/ProgressTag.astro';
+
+export async function getStaticPaths() {
+  return sections.map((section) => ({
+    params: { collection: section.slug },
+    props: { section },
+  }));
+}
+
+const { section } = Astro.props as { section: (typeof sections)[number] };
+const docs = await getDocsBySection(section.slug as CollectionSlug);
+---
+
+<BaseLayout
+  title={`${section.title}　${section.description}`}
+  description={`${section.title}：${section.description}`}
+>
+  <div class="section-shell">
+    <aside class="section-sidebar-area">
+      <Sidebar currentCollection={section.slug} />
+    </aside>
+
+    <article class="section-article">
+      <header class="section-header">
+        {
+          section.numeral ? (
+            <>
+              <p class="section-numeral">{section.numeral}</p>
+              <h1 class="section-title">{section.title}</h1>
+              <p class="section-description">{section.description}</p>
+            </>
+          ) : (
+            <>
+              <h1 class="section-title section-title--meta">{section.title}</h1>
+              <p class="section-description">{section.description}</p>
+            </>
+          )
+        }
+      </header>
+
+      {
+        docs.length === 0 ? (
+          <p class="section-empty">這章還沒開始寫。</p>
+        ) : (
+          <ol class="section-docs">
+            {docs.map((doc, idx) => (
+              <li class="section-doc">
+                <a href={url(`/${section.slug}/${doc.slug}`)} class="section-doc__link">
+                  <span class="section-doc__index">{String(idx + 1).padStart(2, '0')}</span>
+                  <div class="section-doc__content">
+                    <span class="section-doc__title">
+                      {doc.data.title}
+                      <ProgressTag progress={doc.data.progress} />
+                    </span>
+                    {doc.data.description && (
+                      <span class="section-doc__description">{doc.data.description}</span>
+                    )}
+                  </div>
+                </a>
+              </li>
+            ))}
+          </ol>
+        )
+      }
+    </article>
+  </div>
+</BaseLayout>
+
+<style>
+  .section-shell {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: var(--space-12);
+    align-items: flex-start;
+  }
+
+  .section-sidebar-area {
+    position: sticky;
+    top: var(--space-8);
+    max-height: calc(100vh - var(--space-16));
+    overflow-y: auto;
+  }
+
+  .section-article {
+    max-width: var(--content-width);
+    min-width: 0;
+  }
+
+  .section-header {
+    margin-bottom: var(--space-12);
+  }
+
+  .section-numeral {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: var(--font-size-3xl);
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-2);
+    line-height: 1;
+  }
+
+  .section-title {
+    font-size: var(--font-size-3xl);
+    margin: 0 0 var(--space-2);
+  }
+
+  .section-title--meta {
+    font-size: var(--font-size-2xl);
+    color: var(--color-text-muted);
+  }
+
+  .section-description {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-lg);
+  }
+
+  .section-empty {
+    color: var(--color-text-muted);
+    font-style: italic;
+  }
+
+  .section-docs {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .section-doc {
+    border-top: var(--border-thin);
+  }
+
+  .section-doc:last-child {
+    border-bottom: var(--border-thin);
+  }
+
+  .section-doc__link {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    align-items: baseline;
+    gap: var(--space-4);
+    padding: var(--space-4) 0;
+    color: var(--color-text);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .section-doc__link:hover {
+    text-decoration: none;
+  }
+
+  .section-doc__link:hover .section-doc__index {
+    color: var(--color-accent);
+  }
+
+  .section-doc__link:hover .section-doc__title {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+  }
+
+  .section-doc__index {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-base);
+    color: var(--color-text-subtle);
+    text-align: right;
+    transition: color var(--transition-fast);
+  }
+
+  .section-doc__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    min-width: 0;
+  }
+
+  .section-doc__title {
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    color: var(--color-text);
+  }
+
+  .section-doc__description {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+
+  @media (max-width: 960px) {
+    .section-shell {
+      grid-template-columns: 1fr;
+    }
+
+    .section-sidebar-area {
+      display: none;
+    }
+  }
+</style>

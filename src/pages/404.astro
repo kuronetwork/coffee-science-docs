@@ -1,0 +1,60 @@
+---
+/**
+ * 404 頁。
+ *
+ * 不做「Oops 大字 + 回首頁按鈕」的 SaaS 版型。
+ * 純文字、左對齊、上下大留白，三個替代行動。
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { url } from '../utils/url';
+---
+
+<BaseLayout
+  title="找不到這篇"
+  description="這個網址沒有對應的筆記。"
+>
+  <main class="not-found">
+    <p class="not-found__main">找不到這篇。</p>
+    <p class="not-found__sub">可能還在寫，可能改了 slug，也可能本來就不存在。</p>
+    <p class="not-found__actions">
+      回到 <a href={url('/')}>首頁</a>、看看
+      <a href={url('/getting-started')}>目錄</a>，或按
+      <kbd>⌘K</kbd> 用搜尋找關鍵字。
+    </p>
+  </main>
+</BaseLayout>
+
+<style>
+  .not-found {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: var(--space-24) 0;
+  }
+
+  .not-found__main {
+    font-size: var(--font-size-2xl);
+    font-weight: 500;
+    color: var(--color-text);
+    margin: 0 0 var(--space-3);
+  }
+
+  .not-found__sub {
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-8);
+    line-height: 1.85;
+  }
+
+  .not-found__actions {
+    color: var(--color-text-muted);
+    line-height: 1.85;
+  }
+
+  .not-found__actions kbd {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    padding: 0 0.35em;
+    border: var(--border-thin);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-subtle);
+  }
+</style>

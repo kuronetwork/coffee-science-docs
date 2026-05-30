@@ -1,0 +1,168 @@
+---
+/**
+ * 文章右側 TOC。
+ *   - 自動從 h2/h3 生成
+ *   - scroll-spy：滾動時高亮當前位置（IntersectionObserver）
+ *   - 桌面 sticky；手機在 DocLayout 變成頂部 <details>
+ *
+ * 接收 Astro 的 MarkdownHeading[] 陣列。
+ */
+import type { MarkdownHeading } from 'astro';
+
+interface Props {
+  headings: MarkdownHeading[];
+}
+
+const { headings } = Astro.props;
+
+// 只取 h2 / h3，不取 h4 以下，避免列表太長
+const items = headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+
+{
+  items.length > 0 && (
+    <nav class="toc-aside" aria-label="本頁目錄">
+      <h2 class="toc-aside__heading">本頁</h2>
+      <ol class="toc-aside__list">
+        {items.map((h) => (
+          <li
+            class="toc-aside__item"
+            data-depth={h.depth}
+          >
+            <a class="toc-aside__link" href={`#${h.slug}`} data-toc-link={h.slug}>
+              {h.text}
+            </a>
+          </li>
+        ))}
+      </ol>
+    </nav>
+  )
+}
+
+<style>
+  .toc-aside {
+    width: 200px;
+    flex-shrink: 0;
+    font-size: var(--font-size-sm);
+  }
+
+  .toc-aside__heading {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    font-weight: 400;
+    color: var(--color-text-subtle);
+    margin: 0 0 var(--space-3);
+    text-transform: lowercase;
+    letter-spacing: 0.04em;
+  }
+
+  .toc-aside__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-left: 1px solid var(--color-border);
+  }
+
+  .toc-aside__item {
+    margin: 0;
+    padding: 0;
+  }
+
+  .toc-aside__item[data-depth='3'] {
+    padding-left: var(--space-4);
+  }
+
+  .toc-aside__link {
+    display: block;
+    padding: var(--space-1) var(--space-3);
+    font-size: 13px;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    margin-left: -1px;
+    line-height: 1.5;
+    transition: color var(--transition-fast),
+                border-color var(--transition-fast);
+  }
+
+  .toc-aside__link:hover {
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .toc-aside__link[data-active='true'] {
+    color: var(--color-accent);
+    border-left-color: var(--color-accent);
+  }
+</style>
+
+<script>
+  /**
+   * Scroll-spy：用 IntersectionObserver 觀察文章 h2/h3，
+   * 動態把 [data-toc-link] 對應的連結加上 [data-active='true']。
+   */
+  function initTocScrollSpy() {
+    const tocLinks = document.querySelectorAll<HTMLAnchorElement>('[data-toc-link]');
+    if (tocLinks.length === 0) return;
+
+    const slugs = Array.from(tocLinks).map((a) => a.dataset.tocLink!);
+    const headings: HTMLElement[] = slugs
+      .map((slug) => document.getElementById(slug))
+      .filter((h): h is HTMLElement => h !== null);
+
+    if (headings.length === 0) return;
+
+    const setActive = (slug: string) => {
+      tocLinks.forEach((link) => {
+        const isActive = link.dataset.tocLink === slug;
+        if (isActive) {
+          link.dataset.active = 'true';
+        } else {
+          delete link.dataset.active;
+        }
+      });
+    };
+
+    const visible = new Map<string, number>(); // slug -> intersectionRatio
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const id = entry.target.id;
+          if (entry.isIntersecting) {
+            visible.set(id, entry.intersectionRatio);
+          } else {
+            visible.delete(id);
+          }
+        });
+
+        if (visible.size === 0) {
+          // 沒有任何 heading 在視窗內，找最靠近視窗頂端但已滑過的
+          let lastPassed: HTMLElement | null = null;
+          for (const h of headings) {
+            const top = h.getBoundingClientRect().top;
+            if (top < 100) lastPassed = h;
+          }
+          if (lastPassed) setActive(lastPassed.id);
+          return;
+        }
+
+        // 取 visible 中文檔位置最靠前（DOM 順序最早）的那個
+        const orderedVisible = headings.filter((h) => visible.has(h.id));
+        if (orderedVisible.length > 0) setActive(orderedVisible[0].id);
+      },
+      {
+        rootMargin: '-80px 0px -60% 0px',
+        threshold: [0, 0.5, 1],
+      },
+    );
+
+    headings.forEach((h) => observer.observe(h));
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initTocScrollSpy, { once: true });
+  } else {
+    initTocScrollSpy();
+  }
+</script>

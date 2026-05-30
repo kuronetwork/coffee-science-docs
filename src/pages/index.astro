@@ -1,0 +1,133 @@
+---
+/**
+ * 首頁。
+ *
+ * 區塊順序：
+ *   1. Hero（純文字，無背景圖、無 CTA）
+ *   2. 「為什麼做這個網站」短段
+ *   3. 章節導覽（HomeTOC，書本目錄樣式）
+ *
+ * Hero 與 why 段落使用 placeholder 機制：
+ *   - 變數值維持 `[Kuro 自己填...]` 開頭時，對應區塊不渲染，
+ *     首頁顯示一段預設介紹文字代替
+ *   - 修改變數內容後（去掉 `[Kuro 自己填` 開頭）就會自動上線
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HomeTOC from '../components/HomeTOC.astro';
+
+// 直接編輯這三段就會上線。維持 [Kuro 自己填...] 開頭表示還沒填，會自動隱藏。
+const heroTitle = '[Kuro 自己填一句不像 marketing 的標題]';
+const heroLead = '[Kuro 自己填一段 80–120 字、第一人稱、有具體東西的副文]';
+const whyText = '[Kuro 自己填動機，100–150 字。第一人稱，講這個站的存在理由，不要寫成 marketing。]';
+
+const isPlaceholder = (s: string) => /^\s*\[\s*Kuro\s*自己填/.test(s);
+const showHero = !isPlaceholder(heroTitle);
+const showWhy = !isPlaceholder(whyText);
+---
+
+<BaseLayout title="Kuro Coffee Science Notes">
+  <div class="home">
+    {
+      showHero ? (
+        <section class="hero">
+          <h1 class="hero__title">{heroTitle}</h1>
+          {!isPlaceholder(heroLead) && (
+            <p class="hero__lead">{heroLead}</p>
+          )}
+        </section>
+      ) : (
+        <section class="hero hero--minimal">
+          <h1 class="hero__title hero__title--minimal">咖啡科學學習筆記</h1>
+          <p class="hero__lead">
+            這裡記錄 SCA Barista Foundation 與 Intermediate 課程的學習過程，從義式機原理、萃取科學、感官評估到居家日常操作。寫給未來會回頭翻筆記的自己。
+          </p>
+        </section>
+      )
+    }
+
+    {
+      showWhy && (
+        <section class="why" aria-label="為什麼做這個網站">
+          <p class="why__paragraph">{whyText}</p>
+        </section>
+      )
+    }
+
+    <HomeTOC />
+  </div>
+</BaseLayout>
+
+<style>
+  .home {
+    max-width: var(--content-width);
+    margin: 0 auto;
+  }
+
+  .hero {
+    padding: var(--space-16) 0 var(--space-12);
+  }
+
+  .hero--minimal {
+    padding: var(--space-12) 0 var(--space-8);
+  }
+
+  .hero__title {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: var(--font-size-4xl);
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    margin: 0 0 var(--space-6);
+    color: var(--color-text);
+  }
+
+  .hero__title--minimal {
+    font-size: var(--font-size-3xl);
+  }
+
+  .hero__lead {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-muted);
+    max-width: 56ch;
+    margin: 0 0 var(--space-6);
+    line-height: 1.7;
+  }
+
+  .why {
+    padding: var(--space-12) 0;
+    border-top: var(--border-thin);
+    border-bottom: var(--border-thin);
+  }
+
+  .why__paragraph {
+    font-family: var(--font-serif);
+    font-size: 19px;
+    font-style: italic;
+    line-height: 1.85;
+    margin: 0;
+    color: var(--color-text-muted);
+    max-width: 56ch;
+  }
+
+  @media (max-width: 640px) {
+    .hero {
+      padding: var(--space-12) 0 var(--space-8);
+    }
+
+    .hero__title {
+      font-size: var(--font-size-3xl);
+    }
+
+    .hero__title--minimal {
+      font-size: var(--font-size-2xl);
+    }
+
+    .hero__lead {
+      font-size: var(--font-size-base);
+    }
+
+    .why__paragraph {
+      font-size: var(--font-size-lg);
+    }
+  }
+</style>

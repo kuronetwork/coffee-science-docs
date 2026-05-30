@@ -1,0 +1,51 @@
+---
+/**
+ * 進度標記 inline tag。
+ *   - drafting：「在寫」
+ *   - reviewing：「校稿中」
+ *   - done：不顯示
+ */
+interface Props {
+  progress: 'drafting' | 'reviewing' | 'done';
+  /** 顯示版本字串，例如 "v0.1"。drafting 時建議帶上 */
+  version?: string;
+}
+
+const { progress, version } = Astro.props;
+const isDone = progress === 'done';
+const labelMap = {
+  drafting: '在寫',
+  reviewing: '校稿中',
+  done: '',
+} as const;
+const label = labelMap[progress];
+---
+
+{
+  !isDone && (
+    <span class="progress-tag" data-progress={progress}>
+      {label}
+      {version ? ` ${version}` : ''}
+    </span>
+  )
+}
+
+<style>
+  .progress-tag {
+    display: inline-block;
+    padding: 0 var(--space-2);
+    margin-left: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--color-text);
+    background: var(--color-accent-soft);
+    border-radius: var(--radius-sm);
+    line-height: 1.6;
+    vertical-align: middle;
+  }
+
+  .progress-tag[data-progress='reviewing'] {
+    background: color-mix(in srgb, var(--color-callout-warning-bar) 22%, transparent);
+  }
+</style>

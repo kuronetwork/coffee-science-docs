@@ -1,0 +1,123 @@
+---
+/**
+ * 「最近寫的」。
+ *
+ * 樣式比章節導覽更簡單：純左對齊清單，無編號。
+ * 每行：標題 / 章節名 / 更新日期。
+ *
+ * 規則：
+ *   - 只列 progress !== 'drafting' 的文章
+ *   - 沒有任何文章達標時，整個區塊不顯示
+ */
+import { getRecentDocs } from '../utils/content';
+import { findSection } from '../content/sections';
+import { url } from '../utils/url';
+
+const recent = await getRecentDocs(5);
+const items = recent.map((doc) => {
+  const section = findSection(doc.collection);
+  const dateStr = doc.data.updated.toISOString().slice(0, 10);
+  return {
+    href: url(`/${doc.collection}/${doc.slug}`),
+    title: doc.data.title,
+    sectionLabel: section
+      ? `${section.numeral ?? section.title}　${section.title}`
+      : doc.collection,
+    dateStr,
+  };
+});
+---
+
+{
+  items.length > 0 && (
+    <section class="recent-notes" aria-labelledby="recent-notes-heading">
+      <h2 id="recent-notes-heading" class="recent-notes__heading">最近寫的</h2>
+      <ul class="recent-notes__list">
+        {items.map((item) => (
+          <li class="recent-notes__item">
+            <a class="recent-notes__link" href={item.href}>
+              <span class="recent-notes__title">{item.title}</span>
+              <span class="recent-notes__meta">
+                <span class="recent-notes__section">{item.sectionLabel}</span>
+                <time
+                  class="recent-notes__date"
+                  datetime={item.dateStr}
+                >
+                  {item.dateStr}
+                </time>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}
+
+<style>
+  .recent-notes {
+    margin: var(--space-16) 0;
+  }
+
+  .recent-notes__heading {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    font-weight: 400;
+    color: var(--color-text-subtle);
+    text-transform: lowercase;
+    letter-spacing: 0.04em;
+    margin: 0 0 var(--space-4);
+  }
+
+  .recent-notes__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .recent-notes__item {
+    border-top: var(--border-thin);
+  }
+
+  .recent-notes__list .recent-notes__item:last-child {
+    border-bottom: var(--border-thin);
+  }
+
+  .recent-notes__link {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-3) 0;
+    color: var(--color-text);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .recent-notes__link:hover {
+    text-decoration: none;
+  }
+
+  .recent-notes__title {
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    color: var(--color-text);
+  }
+
+  .recent-notes__link:hover .recent-notes__title {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+  }
+
+  .recent-notes__meta {
+    display: flex;
+    gap: var(--space-3);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+  }
+
+  .recent-notes__date {
+    color: var(--color-text-subtle);
+  }
+</style>
