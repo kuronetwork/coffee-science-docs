@@ -13,7 +13,7 @@ sca: barista
 
 ## 開豆 SOP 的目的
 
-拿到一包陌生的新豆，目標是用最少的次數把它調到「三杯一致、味道平衡」的狀態。這篇是〈[brewing-science/開豆起手式](../brewing-science/10-dial-in-baseline)〉的義式專屬深化版，聚焦「在家用義式機從零到穩定」的完整流程。
+拿到一包陌生的新豆，目標是用最少的次數把它調到「三杯一致、味道平衡」的狀態。這篇是〈[brewing-science/開豆起手式](../../brewing-science/10-dial-in-baseline)〉的義式專屬深化版，聚焦「在家用義式機從零到穩定」的完整流程。
 
 整個 SOP 分四個階段：
 

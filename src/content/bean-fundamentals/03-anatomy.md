@@ -29,7 +29,7 @@ sca: green
 
 <cherry-anatomy></cherry-anatomy>
 
-> 站內其他互動工具看 [互動工具索引](../reference/07-interactive-tools)。
+> 站內其他互動工具看 [互動工具索引](../../reference/07-interactive-tools)。
 
 ## 逐層拆解
 

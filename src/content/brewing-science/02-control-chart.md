@@ -38,7 +38,7 @@ SCA Brewing Control Chart 是 1950-60 年代由麻省理工的 Ernest Earl Lockh
 
 <control-chart></control-chart>
 
-> 站內其他互動工具看 [互動工具索引](../reference/07-interactive-tools)。
+> 站內其他互動工具看 [互動工具索引](../../reference/07-interactive-tools)。
 
 ## 兩條對角線：粉水比與萃取率
 
