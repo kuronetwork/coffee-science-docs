@@ -1,7 +1,7 @@
 ---
 title: 推薦資源
 description: 書、Podcast、YouTube、部落格、學術期刊
-order: 6
+order: 7
 updated: 2026-05-30
 progress: done
 tags:

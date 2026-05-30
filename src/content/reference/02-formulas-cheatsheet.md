@@ -1,7 +1,7 @@
 ---
 title: 公式速查
 description: 萃取率、TDS、粉水比、各沖煮法目標數值的計算與換算
-order: 2
+order: 3
 updated: 2026-05-29
 progress: done
 tags:

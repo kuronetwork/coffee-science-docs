@@ -1,7 +1,7 @@
 ---
 title: 術語表（中英對照）
 description: 全站常用名詞速查，A–Z 排序
-order: 1
+order: 2
 updated: 2026-05-29
 progress: done
 tags:

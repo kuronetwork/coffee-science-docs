@@ -103,7 +103,7 @@ export const sections: Section[] = [
     numeral: null,
     order: 10,
     title: '附錄',
-    description: '術語對照表、外部資源參考',
+    description: '公式對照表、外部資源參考、互動工具連結',
   },
 ];
 

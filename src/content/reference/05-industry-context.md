@@ -1,7 +1,7 @@
 ---
 title: Specialty 定義、Direct Trade、C-price
 description: 精品咖啡的業界定義、貿易模式、第三波運動背景
-order: 5
+order: 6
 updated: 2026-05-29
 progress: done
 tags:

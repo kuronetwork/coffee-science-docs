@@ -1,7 +1,7 @@
 ---
 title: SCA AST、Q Grader、Diploma
 description: SCA Coffee Skills Program、AST 講師制度、CQI Q Grader 制度概覽
-order: 4
+order: 5
 updated: 2026-05-29
 progress: done
 tags:
