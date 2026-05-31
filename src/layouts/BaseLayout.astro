@@ -22,18 +22,73 @@ interface Props {
   description?: string;
   /** 用於 og:type，預設 'website'，文章頁傳 'article' */
   ogType?: 'website' | 'article';
+  /** 文章頁專用：發佈/更新日期，用於 schema.org */
+  datePublished?: Date;
+  dateModified?: Date;
 }
 
 const {
   title,
   description = 'Kuro 的咖啡學習筆記，記錄從 SCA Barista 課程開始的萃取、義式、感官學習過程。',
   ogType = 'website',
+  datePublished,
+  dateModified,
 } = Astro.props;
 
 const siteName = 'Kuro Coffee Science Notes';
 const fullTitle = title === siteName ? title : `${title}　${siteName}`;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
 const ogImage = new URL(url('/og-default.png'), Astro.site).toString();
+const siteURL = new URL(url('/'), Astro.site).toString();
+
+// schema.org JSON-LD
+const personSchema = {
+  '@type': 'Person',
+  '@id': `${siteURL}#kuro`,
+  name: 'Kuro',
+  url: 'https://kuronetwork.me/',
+  sameAs: [
+    'https://kuronetwork.me/',
+    'https://twitter.com/catkuroH',
+    'https://explorediving.org/',
+  ],
+  email: 'contact@kuronetwork.me',
+  jobTitle: 'SCA Barista, Diving Instructor, Security Engineer',
+};
+
+const websiteSchema = {
+  '@type': 'WebSite',
+  '@id': `${siteURL}#website`,
+  name: siteName,
+  alternateName: '咖啡科學學習筆記',
+  url: siteURL,
+  inLanguage: 'zh-Hant',
+  description,
+  author: { '@id': `${siteURL}#kuro` },
+  publisher: { '@id': `${siteURL}#kuro` },
+};
+
+const articleSchema =
+  ogType === 'article' && datePublished
+    ? {
+        '@type': 'TechArticle',
+        headline: title,
+        description,
+        url: canonicalURL,
+        inLanguage: 'zh-Hant',
+        datePublished: datePublished.toISOString(),
+        dateModified: (dateModified ?? datePublished).toISOString(),
+        author: { '@id': `${siteURL}#kuro` },
+        publisher: { '@id': `${siteURL}#kuro` },
+        isPartOf: { '@id': `${siteURL}#website` },
+        image: ogImage,
+      }
+    : null;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [personSchema, websiteSchema, ...(articleSchema ? [articleSchema] : [])],
+};
 ---
 
 <!doctype html>
@@ -58,6 +113,11 @@ const ogImage = new URL(url('/og-default.png'), Astro.site).toString();
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
+
+    <!-- schema.org JSON-LD：給 Google AI Overview / ChatGPT / Perplexity 識別 -->
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+    <link rel="alternate" type="application/rss+xml" title={`${siteName} RSS`} href={url('/rss.xml')} />
 
     <link rel="icon" type="image/svg+xml" href={url('/favicon.svg')} />
 

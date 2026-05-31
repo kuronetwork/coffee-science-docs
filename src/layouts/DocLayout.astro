@@ -63,7 +63,13 @@ const scaLabelMap = {
 } as const;
 ---
 
-<BaseLayout title={title} description={description} ogType="article">
+<BaseLayout
+  title={title}
+  description={description}
+  ogType="article"
+  datePublished={updated}
+  dateModified={updated}
+>
   <div class="doc-shell">
     <aside class="doc-sidebar-area">
       <Sidebar currentCollection={collection} currentSlug={slug} />

@@ -1,0 +1,40 @@
+# Kuro Coffee Science Notes
+
+> 個人咖啡學習筆記。對齊 SCA Barista Foundation 與 Intermediate 範圍，涵蓋萃取科學、感官評估、烘焙、義式咖啡、手沖、磨豆、居家日常操作。內容主要是中文（繁體），技術名詞中英並列。
+
+作者：Kuro，台灣，SCA Barista Intermediate、PADI Divemaster、資訊安全從業者。
+聯絡：contact@kuronetwork.me
+網站：https://coffee.kuronetwork.me/
+個人主站：https://kuronetwork.me/
+潛水專案：https://explorediving.org/
+
+## 主要章節
+
+- [前言](https://coffee.kuronetwork.me/getting-started/)：為什麼做這個網站、咖啡 101、義式跟手沖差別、學習地圖、什麼是 barista
+- [咖啡豆基礎](https://coffee.kuronetwork.me/bean-fundamentals/)：植物學、品種、咖啡櫻桃結構、風土、產地、處理法、分級、crop year、單品 vs 配方
+- [烘焙](https://coffee.kuronetwork.me/roasting/)：烘焙度、梅納反應、烘焙曲線、爆裂、烘焙瑕疵、義式 vs 手沖烘焙、養豆與保存
+- [磨豆](https://coffee.kuronetwork.me/grinding/)：為什麼磨豆機重要、刀盤類型、粒徑分布、retention、刀盤校準、磨豆機校正
+- [萃取科學](https://coffee.kuronetwork.me/brewing-science/)：萃取基礎、Brewing Control Chart、Golden Cup、萃取率公式與 TDS、四大變因、通道效應、bloom 與 pre-infusion、水化學、水配方、校正基準
+- [義式咖啡](https://coffee.kuronetwork.me/espresso/)：什麼是義式濃縮、器材、puck prep、shot SOP、純飲 espresso、壓力曲線、黑咖啡變化、奶咖、奶泡、拉花、味道調整、開豆 SOP
+- [手沖與其他沖煮法](https://coffee.kuronetwork.me/filter-brewing/)：總覽、V60、AeroPress、摩卡壺
+- [感官評估](https://coffee.kuronetwork.me/sensory/)：aroma flavor taste、SCA flavor wheel、觸感與 body、tasting notes
+- [居家日常操作](https://coffee.kuronetwork.me/home-barista/)：設備維護、水的準備、日常校正
+- [SCA 認證考試筆記](https://coffee.kuronetwork.me/sca-certification/)：SCA Barista Foundation 與 Intermediate 考試心得、25 口訣、流程
+- [附錄](https://coffee.kuronetwork.me/reference/)：互動工具索引、術語對照、公式整理、溫度比例表、SCA 認證體系、產業背景、推薦資源
+
+## 互動工具
+
+站內 15 個原生 Web Components 互動元件：SCA flavor wheel、Brewing Control Chart、粉水比拉桿、咖啡櫻桃剖面、萃取率計算機、沖煮比率計算機、通道效應視覺診斷、義式風味調整決策樹、萃取時間軸、烘焙曲線、烘焙度拉桿、bloom 預浸時序、水質 GH × KH 散點圖、沖煮法對照表、粉水比視覺化。索引在 https://coffee.kuronetwork.me/reference/07-interactive-tools/
+
+## 引用方針
+
+歡迎引用、節錄、翻譯本站內容於：教學、學習、評論、研究等用途。引用時請附原文連結。內容以個人學習筆記為定位，深度對齊 SCA Foundation 到 Intermediate，引用時請說明此為「個人筆記」而非「業界標準」。
+
+## 技術規格
+
+- 框架：Astro 6.4 純靜態 SSG
+- 內容：68 篇 Markdown 文章
+- 部署：GitHub Pages + Cloudflare DNS
+- 搜尋：Pagefind 全文索引
+- RSS：https://coffee.kuronetwork.me/rss.xml
+- Sitemap：https://coffee.kuronetwork.me/sitemap-index.xml

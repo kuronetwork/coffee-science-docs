@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^7",
+    "@astrojs/rss": "^4.0.18",
     "@astrojs/sitemap": "^3.7.3",
     "astro": "^6.4.2",
     "katex": "^0.17.0",
@@ -23,6 +24,7 @@
   },
   "devDependencies": {
     "pagefind": "^1.5.2",
+    "sharp": "^0.34.5",
     "typescript": "^5.6.3",
     "unified": "^11.0.5",
     "unist-util-visit": "^5.1.0"
