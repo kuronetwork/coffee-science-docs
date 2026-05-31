@@ -16,7 +16,7 @@ sca: null
 
 ### 萃取時間軸（Extraction Timeline）
 
-0 到 30 秒的義式萃取階段拖曳器。前段酸質、中段甜、後段苦，三色帶分明，點 ristretto / normale / lungo 預設按鈕看截斷點怎麼影響杯中味道。
+0 到 30 秒的義式萃取階段拖曳器。前段酸質、中段甜、後段苦，三色帶分明。點 ristretto / normale / lungo 預設按鈕看截斷點怎麼影響杯中味道。
 
 → 跳到這個工具所在的文章：[義式咖啡・什麼是義式濃縮](../../espresso/01-what-is-espresso) 與 [純飲 espresso：ristretto、normale、lungo](../../espresso/05-pure-espresso)
 
@@ -36,7 +36,7 @@ sca: null
 
 ### Brewing Control Chart
 
-SCA Brewing Control Chart 的可互動版本。輸入粉重、液重、TDS 三個數字，圖上會自動落點，可以判斷這杯落在九宮格哪一格、要往哪個方向調。
+SCA Brewing Control Chart 的可互動版本。輸入粉重、液重、TDS 三個數字，圖上會自動落點，看這杯落在九宮格哪一格、要往哪個方向調。
 
 → 跳到這個工具所在的文章：[萃取科學・SCA Brewing Control Chart 完整解讀](../../brewing-science/02-control-chart)
 

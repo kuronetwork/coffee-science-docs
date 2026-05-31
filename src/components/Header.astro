@@ -5,7 +5,7 @@
  * 設計重點：
  *   - 站名「Kuro Coffee Science Notes」+ 副標「咖啡科學學習筆記」
  *   - 站名後面有副標時，桌面顯示，手機只顯示主名
- *   - 右側依序：關於、搜尋觸發器、ThemeToggle
+ *   - 右側依序：關於作者、搜尋觸發器、ThemeToggle
  *   - 元件之間用 --space-4，不要置中分隔點
  */
 import { url } from '../utils/url';
@@ -20,7 +20,7 @@ import ThemeToggle from './ThemeToggle.astro';
     </a>
 
     <nav class="site-header__actions" aria-label="站內動作">
-      <a class="header-action" href={url('/about')}>關於</a>
+      <a class="header-action" href={url('/about')}>關於作者</a>
 
       <button
         type="button"

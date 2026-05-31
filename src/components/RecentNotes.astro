@@ -18,7 +18,7 @@ const items = recent.map((doc) => {
   const section = findSection(doc.collection);
   const dateStr = doc.data.updated.toISOString().slice(0, 10);
   return {
-    href: url(`/${doc.collection}/${doc.slug}`),
+    href: url(`/${doc.collection}/${doc.id}`),
     title: doc.data.title,
     sectionLabel: section
       ? `${section.numeral ?? section.title}　${section.title}`

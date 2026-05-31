@@ -10,12 +10,12 @@
  * 注意：詳細的術語條目格式之後寫 reference/01-glossary.md 時再用 markdown 表達，
  * 這個頁面只是 wrapper，用 prose 樣式呈現 markdown 內容。
  */
-import { getEntry } from 'astro:content';
+import { getEntry, render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import '../styles/typography.css';
 
 const entry = await getEntry('reference', '01-glossary').catch(() => null);
-const Content = entry && !entry.data.draft ? (await entry.render()).Content : null;
+const Content = entry && !entry.data.draft ? (await render(entry)).Content : null;
 ---
 
 <BaseLayout

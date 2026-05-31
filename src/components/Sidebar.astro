@@ -76,14 +76,14 @@ const sectionEntries = await Promise.all(
                 hidden={!isActive}
               >
                 {docs.map((doc) => {
-                  const isCurrent = isActive && doc.slug === currentSlug;
+                  const isCurrent = isActive && doc.id === currentSlug;
                   return (
                     <li
                       class="sidebar__doc"
                       data-current={isCurrent ? 'true' : 'false'}
                     >
                       <a
-                        href={url(`/${section.slug}/${doc.slug}`)}
+                        href={url(`/${section.slug}/${doc.id}`)}
                         class="sidebar__doc-link"
                         aria-current={isCurrent ? 'page' : undefined}
                       >

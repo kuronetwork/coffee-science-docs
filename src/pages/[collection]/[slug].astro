@@ -5,6 +5,7 @@
  * 從 Astro Content Collections 抓所有 collection 與 slug，
  * 組合成靜態路由。draft: true 的會被 getDocsBySection 過濾掉。
  */
+import { render } from 'astro:content';
 import { sections } from '../../content/sections';
 import { getDocsBySection } from '../../utils/content';
 import { readingTime } from '../../utils/reading-time';
@@ -16,7 +17,7 @@ export async function getStaticPaths() {
     const docs = await getDocsBySection(section.slug);
     for (const doc of docs) {
       paths.push({
-        params: { collection: section.slug, slug: doc.slug },
+        params: { collection: section.slug, slug: doc.id },
         props: { doc },
       });
     }
@@ -25,16 +26,16 @@ export async function getStaticPaths() {
 }
 
 const { doc } = Astro.props;
-const { Content, headings } = await doc.render();
+const { Content, headings } = await render(doc);
 
-const minutes = readingTime(doc.body);
+const minutes = readingTime(doc.body ?? '');
 ---
 
 <DocLayout
   title={doc.data.title}
   description={doc.data.description}
   collection={doc.collection}
-  slug={doc.slug}
+  slug={doc.id}
   updated={doc.data.updated}
   progress={doc.data.progress}
   readingTimeMinutes={minutes}

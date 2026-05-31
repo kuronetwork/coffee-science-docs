@@ -31,7 +31,7 @@ export async function getSiblings(
   currentSlug: string,
 ): Promise<{ prev: AnyDoc | null; next: AnyDoc | null }> {
   const docs = await getDocsBySection(collection);
-  const idx = docs.findIndex((d) => d.slug === currentSlug);
+  const idx = docs.findIndex((d) => d.id === currentSlug);
   if (idx === -1) return { prev: null, next: null };
   return {
     prev: idx > 0 ? docs[idx - 1] : null,

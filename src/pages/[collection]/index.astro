@@ -57,7 +57,7 @@ const docs = await getDocsBySection(section.slug as CollectionSlug);
           <ol class="section-docs">
             {docs.map((doc, idx) => (
               <li class="section-doc">
-                <a href={url(`/${section.slug}/${doc.slug}`)} class="section-doc__link">
+                <a href={url(`/${section.slug}/${doc.id}`)} class="section-doc__link">
                   <span class="section-doc__index">{String(idx + 1).padStart(2, '0')}</span>
                   <div class="section-doc__content">
                     <span class="section-doc__title">

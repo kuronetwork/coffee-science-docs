@@ -11,7 +11,6 @@
  *   - metadata（更新日期、預估閱讀、SCA 標記）
  *   - <slot /> 文章內容
  *   - 上一篇 / 下一篇
- *   - EditOnGitHub
  *   - 回到頂部
  */
 import type { MarkdownHeading } from 'astro';
@@ -19,7 +18,6 @@ import BaseLayout from './BaseLayout.astro';
 import Sidebar from '../components/Sidebar.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import ProgressTag from '../components/ProgressTag.astro';
-import EditOnGitHub from '../components/EditOnGitHub.astro';
 
 import { findSection } from '../content/sections';
 import { getSiblings } from '../utils/content';
@@ -106,7 +104,7 @@ const scaLabelMap = {
         <div class="doc-prev-next__col">
           {
             prev && (
-              <a href={url(`/${collection}/${prev.slug}`)}>
+              <a href={url(`/${collection}/${prev.id}`)}>
                 <span class="doc-prev-next__label">上一篇</span>
                 <span class="doc-prev-next__title">{prev.data.title}</span>
               </a>
@@ -116,7 +114,7 @@ const scaLabelMap = {
         <div class="doc-prev-next__col doc-prev-next__col--right">
           {
             next && (
-              <a href={url(`/${collection}/${next.slug}`)}>
+              <a href={url(`/${collection}/${next.id}`)}>
                 <span class="doc-prev-next__label">下一篇</span>
                 <span class="doc-prev-next__title">{next.data.title}</span>
               </a>
@@ -126,7 +124,6 @@ const scaLabelMap = {
       </nav>
 
       <footer class="doc-footer">
-        <EditOnGitHub collection={collection} slug={slug} />
         <a href="#main" class="doc-footer__top">回到頂部</a>
       </footer>
     </article>
