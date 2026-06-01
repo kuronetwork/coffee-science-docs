@@ -114,18 +114,19 @@ $$\text{熱水量} = 225 + 8 + 15 \times 2 \approx 263 \text{ g}$$
 
 加上預熱濾杯與分享壺的水，建議燒 350 g 起跳。
 
-## 奶咖容量配比
+## 義式牛奶飲品容量配比
 
-SCA 標準奶咖配比（雙份 espresso 為基準，奶量計算到杯緣）：
+SCA 標準義式牛奶飲品配比（雙份 espresso 為基準，奶量計算到杯緣）：
 
-| 飲品 | espresso | 蒸奶總量 | 奶泡厚度 | 杯量 |
+| 飲品 | espresso | 蒸牛奶總量 | 奶泡厚度 | 杯量 |
 |---|---|---|---|---|
-| Espresso | 36 g | — | — | 60–90 ml 杯 |
-| Cortado | 36 g | 60 ml | 約 0.5 cm | 100 ml |
-| Flat White | 36 g | 110 ml | 約 0.5 cm | 150–160 ml |
-| Cappuccino | 36 g | 120 ml | 約 1 cm | 150–180 ml |
-| Latte | 36 g | 200 ml | 約 0.5 cm | 220–280 ml |
-| Mocha | 36 g | 200 ml + 巧克力醬 20–30 g | 0.5–1 cm | 250 ml |
+| Espresso（義式濃縮）| 36 g | — | — | 60–90 ml 杯 |
+| Macchiato（瑪奇朵）| 36 g | 10–15 ml | 表面點奶泡 | 60–90 ml |
+| Cortado（柯達朵）| 36 g | 60 ml | 約 0.5 cm | 100 ml |
+| Flat White（馥列白）| 36 g | 110 ml | 約 0.5 cm | 150–160 ml |
+| Cappuccino（卡布奇諾）| 36 g | 120 ml | 約 1 cm | 150–180 ml |
+| Latte（拿鐵）| 36 g | 200 ml | 約 0.5 cm | 220–280 ml |
+| Mocha（摩卡）| 36 g | 200 ml + 巧克力醬 20–30 g | 0.5–1 cm | 250 ml |
 
 奶量為近似值，依杯型微調。SCA Barista Foundation 評核以杯緣下 1 cm 為標準液面。
 

@@ -44,7 +44,7 @@ sca: null
 
 ## 飲品
 
-- **Latte / Cappuccino / Flat White**：espresso 加上不同比例蒸奶與奶泡的常見奶咖。
+- **Latte / Cappuccino / Flat White**：espresso 加上不同比例蒸牛奶與奶泡的常見義式牛奶飲品。
 - **Americano**：espresso 加熱水稀釋。
 - **Mocha**：espresso 加巧克力醬、奶與奶泡。
 
